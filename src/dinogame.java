@@ -53,10 +53,10 @@ class Dino extends JPanel {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_UP && jump < 21&&jump>10) {
+                if (e.getKeyCode() == KeyEvent.VK_UP && jump < 21&&jump>10||(e.getKeyCode() == KeyEvent.VK_SPACE && jump < 21&&jump>10)) {
                     timealoft = 25;
-                } else if (e.getKeyCode() == KeyEvent.VK_DOWN && jump > 39)
-                    jump /=2;
+                } else if (e.getKeyCode() == KeyEvent.VK_DOWN && jump > 30)
+                    jump -=10;
                 else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     delay=0;
                 }
@@ -140,6 +140,7 @@ class Dino extends JPanel {
         }
         g.fillRect(getWidth()/10,getHeight()/2-jump,10,height);
 
+
     }
 
 }
@@ -157,8 +158,10 @@ class cactus {
         x+=speed;
     }
     protected void paint(JPanel p ,Graphics g) {
+
         if (type==0)
             g.fillRect(p.getWidth()-30-x,p.getHeight()/2-10,20,10);
+
         else if (type == 1)
             g.fillRect(p.getWidth()-30-x,p.getHeight()/2-20,10,20);
         else if (type==2)
