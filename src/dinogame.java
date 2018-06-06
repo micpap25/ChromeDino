@@ -66,6 +66,9 @@ class Dino extends JPanel {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_UP && jump < 21&&jump>10) {
+                    AudioPlayer player = new AudioPlayer();
+                    String audioFilePath1 = "src\\jump.wav";
+                    player.play(audioFilePath1);
                     timealoft = 25;
                 } else if (e.getKeyCode() == KeyEvent.VK_DOWN && jump > 39)
                     jump /=2;
