@@ -1,4 +1,4 @@
-
+import javax.sound.sampled.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -25,12 +25,16 @@ public class dinogame extends JFrame {
 
     public static void main(String[] args){
         dinogame frame = new dinogame();
+        String audioFilePath = "src\\Wii_Theme.wav";
+        AudioPlayer player = new AudioPlayer();
+
         frame.setTitle("Dino McMan");
         frame.setSize(400, 400);
         frame.setBackground(Color.WHITE);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        player.play(audioFilePath);
 
     }
 }
@@ -41,13 +45,16 @@ class Dino extends JPanel {
     int k = 0;
     int jump = 20;
     int timealoft;
-    int score = 0;
+    int score = 500;
     boolean haslost = false;
     int height = 20;
     boolean crouch=false;
     BufferedReader in;
     public static PrintWriter out;
     JLabel score1= new JLabel("Score:");
+
+
+
     public Dino(){
         Timer timer = new Timer(10/speed, new TimerListener());
         timer.start();
@@ -99,7 +106,7 @@ class Dino extends JPanel {
                 for(int i =0;i<19;i++){
                     cactuslist[i]=cactuslist[i+1];
                 }
-                int p = rand.nextInt(8);
+                int p = rand.nextInt(4);
                 if(score<500&&(p==2||p==3))
                     p=rand.nextInt(2);
                 cactuslist[19]=(new cactus(p,speed));
@@ -146,13 +153,13 @@ class Dino extends JPanel {
             cactuslist[i].paint(this,g);
         }
         try {
-            if (crouch && score%6>=3) {
+            if (crouch && score%2==1) {
                 BufferedImage rex = ImageIO.read(new File("images\\ChromeDino_Duck2.png"));
                 g.drawImage(rex, getWidth() / 10, getHeight() / 2 - jump, 15, height, null);
-            } else if (crouch && score%6<=2){
+            } else if (crouch && score%2==0){
                 BufferedImage rex = ImageIO.read(new File("images\\ChromeDino_Duck1.png"));
                 g.drawImage(rex, getWidth() / 10, getHeight() / 2 - jump, 15, height, null);
-            } else if (score%6 >=3) {
+            } else if (score%2==1) {
                 BufferedImage rex = ImageIO.read(new File("images\\ChromeDino_Run2.png"));
                 g.drawImage(rex, getWidth() / 10, getHeight() / 2 - jump, 15, height, null);
             } else {
@@ -202,5 +209,37 @@ class cactus {
         this.speed = speed;
     }
 
+}
 
+class AudioPlayer implements LineListener{
+    boolean playCompleted;
+    void play(String audioFilePath) {
+        File audioFile = new File(audioFilePath);
+        try{
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+            AudioFormat format = audioStream.getFormat();
+            DataLine.Info info = new DataLine.Info(Clip .class, format);
+            Clip audioClip = (Clip) AudioSystem.getLine(info);
+            audioClip.addLineListener(this);
+            audioClip.open(audioStream);
+            audioClip.start();
+            while(!playCompleted) {
+                try{
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                }
+            }
+            audioClip.close();
+        } catch (UnsupportedAudioFileException ex) {
+        } catch (LineUnavailableException ex) {
+        } catch (IOException ex) {
+        }
+    }
+    public void update(LineEvent event) {
+        LineEvent.Type type = event.getType();
+
+        if (type == LineEvent.Type.STOP) {
+            playCompleted = true;
+        }
+    }
 }
