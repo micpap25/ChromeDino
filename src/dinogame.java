@@ -65,20 +65,26 @@ class Dino extends JPanel {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
+                AudioPlayer player = new AudioPlayer();
+                String audioFilePath1 = "src\\jump.wav";
+
+
                 if (e.getKeyCode() == KeyEvent.VK_UP && jump < 21&&jump>10) {
-                    AudioPlayer player = new AudioPlayer();
-                    String audioFilePath1 = "src\\jump.wav";
-                    player.play(audioFilePath1);
                     timealoft = 25;
-                } else if (e.getKeyCode() == KeyEvent.VK_DOWN && jump > 39)
-                    jump /=2;
-                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                }
+                if (e.getKeyCode() == KeyEvent.VK_UP && jump < 21&&jump>10) {player.play(audioFilePath1);}
+                else if (e.getKeyCode() == KeyEvent.VK_DOWN && jump > 21)
+                    timealoft = 0;
+                if (e.getKeyCode() == KeyEvent.VK_DOWN && jump < 21 && jump > 10) {
                     crouch = true;
                 }
-                else {
+
+            }
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     crouch = false;
                 }
-
             }
         });
     }
@@ -118,7 +124,7 @@ class Dino extends JPanel {
 
             }
             for(int i = 0;i<cactuslist.length;i++){
-                if (getWidth()-30-cactuslist[i].x<getWidth()/10+15 && getWidth()-30-cactuslist[i].x+5>getWidth()/10)
+                if (getWidth()-30-cactuslist[i].x<getWidth()/10+15 && getWidth()-30-cactuslist[i].x+10>getWidth()/10)
                     if((cactuslist[i].type==0&&jump<40)||(cactuslist[i].type==1&&jump<30)||(cactuslist[i].type==2&&jump>25)||(cactuslist[i].type==3&&(jump<45&&jump>10))){
                         haslost = true;
                     }
