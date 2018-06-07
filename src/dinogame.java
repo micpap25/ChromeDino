@@ -126,12 +126,16 @@ class Dino extends JPanel {
             for(int i = 0;i<cactuslist.length;i++){
                 if (getWidth()-30-cactuslist[i].x<getWidth()/10+15 && getWidth()-30-cactuslist[i].x+10>getWidth()/10)
                     if((cactuslist[i].type==0&&jump<40)||(cactuslist[i].type==1&&jump<30)||(cactuslist[i].type==2&&jump>25)||(cactuslist[i].type==3&&(jump<45&&jump>10))){
+
                         haslost = true;
                     }
             }
 
             if(haslost){
                 try {
+                    AudioPlayer player = new AudioPlayer();
+                    String audioFilePath2 = "src\\Death_sound_Effect.wav";
+                    player.play(audioFilePath2);
                     out = new PrintWriter(new BufferedWriter(new FileWriter("scores.out")));
                     out.print("" + score);
 
