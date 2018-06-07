@@ -26,7 +26,7 @@ public class dinogame extends JFrame {
     public static void main(String[] args){
         dinogame frame = new dinogame();
         String audioFilePath = "src\\Wii_Theme.wav";
-        AudioPlayer player = new AudioPlayer();
+//        AudioPlayer player = new AudioPlayer();
 
         frame.setTitle("Dino McMan");
         frame.setSize(400, 400);
@@ -34,7 +34,7 @@ public class dinogame extends JFrame {
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        player.play(audioFilePath);
+//        player.play(audioFilePath);
 
     }
 }
@@ -52,7 +52,7 @@ class Dino extends JPanel {
     BufferedReader in;
     public static PrintWriter out;
     JLabel score1= new JLabel("Score:");
-
+    Sounds sounds = new Sounds();
 
 
     public Dino(){
@@ -65,14 +65,14 @@ class Dino extends JPanel {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                AudioPlayer player = new AudioPlayer();
-                String audioFilePath1 = "src\\jump.wav";
+//                AudioPlayer player = new AudioPlayer();
+//                String audioFilePath1 = "src\\jump.wav";
 
 
                 if (e.getKeyCode() == KeyEvent.VK_UP && jump < 21&&jump>10) {
                     timealoft = 25;
                 }
-                if (e.getKeyCode() == KeyEvent.VK_UP && jump < 21&&jump>10) {player.play(audioFilePath1);}
+  //              if (e.getKeyCode() == KeyEvent.VK_UP && jump < 21&&jump>10) {player.play(audioFilePath1);}
                 else if (e.getKeyCode() == KeyEvent.VK_DOWN && jump > 21)
                     timealoft = 0;
                 if (e.getKeyCode() == KeyEvent.VK_DOWN && jump < 21 && jump > 10) {
@@ -133,9 +133,7 @@ class Dino extends JPanel {
 
             if(haslost){
                 try {
-                    AudioPlayer player = new AudioPlayer();
-                    String audioFilePath2 = "src\\Death_sound_Effect.wav";
-                    player.play(audioFilePath2);
+                    sounds.playDeathClip();
                     out = new PrintWriter(new BufferedWriter(new FileWriter("scores.out")));
                     out.print("" + score);
 
@@ -224,35 +222,25 @@ class cactus {
 
 }
 
-class AudioPlayer implements LineListener{
-    boolean playCompleted;
-    void play(String audioFilePath) {
-        File audioFile = new File(audioFilePath);
-        try{
+class Sounds {
+    private Clip deathClip;
+
+    public Sounds() {
+        File audioFile = new File("src\\Death_sound_Effect.wav");
+        try {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
             AudioFormat format = audioStream.getFormat();
-            DataLine.Info info = new DataLine.Info(Clip .class, format);
-            Clip audioClip = (Clip) AudioSystem.getLine(info);
-            audioClip.addLineListener(this);
-            audioClip.open(audioStream);
-            audioClip.start();
-            /*while(!playCompleted) {
-                try{
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                }
-            }
-            audioClip.close();*/
-        } catch (UnsupportedAudioFileException ex) {
-        } catch (LineUnavailableException ex) {
-        } catch (IOException ex) {
+            DataLine.Info info = new DataLine.Info(Clip.class, format);
+            deathClip = (Clip) AudioSystem.getLine(info);
+            // deathClip.addLineListener(this);
+            deathClip.open(audioStream);
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Unable to initialize sounds.", e);
         }
     }
-    public void update(LineEvent event) {
-        LineEvent.Type type = event.getType();
 
-        if (type == LineEvent.Type.STOP) {
-            playCompleted = true;
-        }
+    void playDeathClip() {
+        deathClip.start();
     }
 }
