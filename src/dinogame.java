@@ -65,11 +65,8 @@ class Dino extends JPanel {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-//                AudioPlayer player = new AudioPlayer();
-//                String audioFilePath1 = "src\\jump.wav";
-
-
                 if (e.getKeyCode() == KeyEvent.VK_UP && jump < 21&&jump>10) {
+                    sounds.playJumpClip();
                     timealoft = 25;
                 }
                 else if (e.getKeyCode() == KeyEvent.VK_DOWN && jump > 21)
@@ -86,6 +83,8 @@ class Dino extends JPanel {
                 }
             }
         });
+        sounds.playTheme();
+
     }
 
     public class TimerListener  implements ActionListener {
@@ -132,7 +131,9 @@ class Dino extends JPanel {
 
             if(haslost){
                 try {
+                    System.out.println("Died!");
                     sounds.playDeathClip();
+                    System.out.println("Played!");
                     out = new PrintWriter(new BufferedWriter(new FileWriter("scores.out")));
                     out.print("" + score);
 
@@ -223,17 +224,21 @@ class cactus {
 }
 
 class Sounds {
-    private Clip deathClip;
+    private String[] files = {"src\\Death_sound_Effect.wav","src\\jump.wav","src\\Wii_Theme.wav"};
+    private Clip[] clips = new Clip[3];
 
     public Sounds() {
-        File audioFile = new File("src\\Death_sound_Effect.wav");
         try {
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-            AudioFormat format = audioStream.getFormat();
-            DataLine.Info info = new DataLine.Info(Clip.class, format);
-            deathClip = (Clip) AudioSystem.getLine(info);
-            // deathClip.addLineListener(this);
-            deathClip.open(audioStream);
+            for (int i=0; i<files.length; i++) {
+                File file = new File(files[i]);
+
+                AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+                AudioFormat format = audioStream.getFormat();
+                DataLine.Info info = new DataLine.Info(Clip.class, format, (int) (audioStream.getFrameLength() * format.getFrameSize()));
+                clips[i] = (Clip) AudioSystem.getLine(info);
+                // deathClip.addLineListener(this);
+                clips[i].open(audioStream);
+            }
         }
         catch (Exception e) {
             throw new RuntimeException("Unable to initialize sounds.", e);
@@ -241,6 +246,19 @@ class Sounds {
     }
 
     void playDeathClip() {
-        deathClip.start();
+        clips[0].setFramePosition(0);
+        clips[0].start();
     }
+
+    void playJumpClip() {
+        clips[1].setFramePosition(0);
+        clips[1].start();
+    }
+
+    void playTheme() {
+        clips[2].loop(20000);
+        clips[2].setFramePosition(0);
+        clips[2].start();
+    }
+
 }
