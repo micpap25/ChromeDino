@@ -45,7 +45,7 @@ class Dino extends JPanel {
     int k = 0;
     int jump = 20;
     int timealoft;
-    int score = 500;
+    int score = 0;
     boolean haslost = false;
     int height = 20;
     boolean crouch=false;
@@ -56,7 +56,7 @@ class Dino extends JPanel {
 
 
     public Dino(){
-        Timer timer = new Timer(10/speed, new TimerListener());
+        Timer timer = new Timer(10, new TimerListener());
         timer.start();
         Border b = new LineBorder(Color.BLACK,2);
         score1.setBorder(b);
@@ -72,7 +72,6 @@ class Dino extends JPanel {
                 if (e.getKeyCode() == KeyEvent.VK_UP && jump < 21&&jump>10) {
                     timealoft = 25;
                 }
-  //              if (e.getKeyCode() == KeyEvent.VK_UP && jump < 21&&jump>10) {player.play(audioFilePath1);}
                 else if (e.getKeyCode() == KeyEvent.VK_DOWN && jump > 21)
                     timealoft = 0;
                 if (e.getKeyCode() == KeyEvent.VK_DOWN && jump < 21 && jump > 10) {
@@ -97,7 +96,7 @@ class Dino extends JPanel {
                 timealoft--;
             }
             else if (jump>20){
-                jump-=1;
+                jump-=2;
             }
             if(crouch) {
                 height = 10;
@@ -116,7 +115,7 @@ class Dino extends JPanel {
                     cactuslist[i]=cactuslist[i+1];
                 }
                 int p = rand.nextInt(4);
-                if(score<500&&(p==2||p==3))
+                if(score<100&&(p==2||p==3))
                     p=rand.nextInt(2);
                 cactuslist[19]=(new cactus(p,speed));
                 k=0;
@@ -124,8 +123,8 @@ class Dino extends JPanel {
 
             }
             for(int i = 0;i<cactuslist.length;i++){
-                if (getWidth()-30-cactuslist[i].x<getWidth()/10+15 && getWidth()-30-cactuslist[i].x+10>getWidth()/10)
-                    if((cactuslist[i].type==0&&jump<40)||(cactuslist[i].type==1&&jump<30)||(cactuslist[i].type==2&&jump>25)||(cactuslist[i].type==3&&(jump<45&&jump>10))){
+                if (getWidth()-30-cactuslist[i].x<getWidth()/10+15 && getWidth()-30-cactuslist[i].x+12>getWidth()/10)
+                    if((cactuslist[i].type==0&&jump<25)||(cactuslist[i].type==1&&jump<35)||(cactuslist[i].type==2&&jump>25)||(cactuslist[i].type==3&&(jump<45&&jump>10))){
 
                         haslost = true;
                     }
@@ -142,7 +141,7 @@ class Dino extends JPanel {
                 }
                 score=0;
                 for(int i =0;i<20;i++){
-                    cactuslist[i]=new cactus(5,1);
+                    cactuslist[i]=new cactus(5,speed);
                 }
                 haslost=false;
 
@@ -190,6 +189,7 @@ class cactus {
         this.type = type;
         this.x = 0;
         this.speed = speed;
+
     }
 
     public void move(){
