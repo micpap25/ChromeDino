@@ -236,13 +236,13 @@ class AudioPlayer implements LineListener{
             audioClip.addLineListener(this);
             audioClip.open(audioStream);
             audioClip.start();
-            while(!playCompleted) {
+            /*while(!playCompleted) {
                 try{
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
                 }
             }
-            audioClip.close();
+            audioClip.close();*/
         } catch (UnsupportedAudioFileException ex) {
         } catch (LineUnavailableException ex) {
         } catch (IOException ex) {
