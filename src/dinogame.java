@@ -49,7 +49,6 @@ class Dino extends JPanel {
     boolean haslost = false;
     int height = 20;
     boolean crouch=false;
-    int aiChoice = 0;
     BufferedReader in;
     public static PrintWriter out;
     JLabel score1= new JLabel("Score:");
@@ -66,13 +65,13 @@ class Dino extends JPanel {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_UP && jump < 21&&jump>10 || aiChoice == 1) {
+                if (e.getKeyCode() == KeyEvent.VK_UP && jump < 21&&jump>10) {
                     sounds.playJumpClip();
                     timealoft = 25;
                 }
-                else if (e.getKeyCode() == KeyEvent.VK_DOWN && jump > 21 || aiChoice == 2)
+                else if (e.getKeyCode() == KeyEvent.VK_DOWN && jump > 21)
                     timealoft = 0;
-                if (e.getKeyCode() == KeyEvent.VK_DOWN && jump < 21 && jump > 10 || aiChoice == 2) {
+                if (e.getKeyCode() == KeyEvent.VK_DOWN && jump < 21 && jump > 10) {
                     crouch = true;
                 }
 
