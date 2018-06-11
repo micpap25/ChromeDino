@@ -49,6 +49,10 @@ class Dino extends JPanel {
     boolean haslost = false;
     int height = 20;
     boolean crouch=false;
+    inframe[] bird1 = inframe[20];
+    inframe[] bird2 = inframe[20];
+    inframe[] cactus1 = inframe[20];
+    inframe[] cactus2 = inframe[20];
     BufferedReader in;
     public static PrintWriter out;
     JLabel score1= new JLabel("Score:");
@@ -61,6 +65,18 @@ class Dino extends JPanel {
         Border b = new LineBorder(Color.BLACK,2);
         score1.setBorder(b);
         add(score1);
+         for (int i = 0; i < 20; i++) {
+                bird1[i] = new inframe(new int[]{KeyEvent.VK_UP, KeyEvent.VK_DOWN, 0});
+        }
+        for (int i = 0; i < 20; i++) {
+            bird2[i] = new inframe(new int[]{KeyEvent.VK_UP, KeyEvent.VK_DOWN, 0});
+        }
+        for (int i = 0; i < 20; i++) {
+            cactus1[i] = new inframe(new int[]{KeyEvent.VK_UP, KeyEvent.VK_DOWN, 0});
+        }
+        for (int i = 0; i < 20; i++) {
+            cactus2[i] = new inframe(new int[]{KeyEvent.VK_UP, KeyEvent.VK_DOWN, 0});
+        }
 
         addKeyListener(new KeyAdapter() {
             @Override
@@ -118,6 +134,31 @@ class Dino extends JPanel {
                     p=rand.nextInt(2);
                 cactuslist[19]=(new cactus(p,speed));
                 k=0;
+                for (int i = 0; i < 20; i++) {
+                    if(cactuslist[i].type==2&&cactuslist[i].x>getWidth()/10) {
+                        bird1[i].istrue(true);
+                    }
+                    bird1[i].istrue(false);
+                }
+                for (int i = 0; i < 20; i++) {
+                    if(cactuslist[i].type==3&&cactuslist[i].x>getWidth()/10) {
+                        bird2[i].istrue(true);
+                    }
+                    bird2[i].istrue(false);
+                }
+                for (int i = 0; i < 20; i++) {
+                    if(cactuslist[i].type==0&&cactuslist[i].x>getWidth()/10) {
+                        cactus1[i].istrue(true);
+                    }
+                    cactus1[i].istrue(false);
+                }
+                for (int i = 0; i < 20; i++) {
+                    if(cactuslist[i].type==1&&cactuslist[i].x>getWidth()/10) {
+                        cactus2[i].istrue(true);
+                    }
+                    cactus2[i].istrue(false); }
+
+            }
 
 
             }
