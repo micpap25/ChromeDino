@@ -1,3 +1,5 @@
+import javafx.stage.Screen;
+
 import javax.sound.sampled.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -67,10 +69,12 @@ class Dino extends JPanel {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_UP && jump < 21&&jump>10) {
                     sounds.playJumpClip();
-                    timealoft = 27;
+                    timealoft = 45;
                 }
-                else if (e.getKeyCode() == KeyEvent.VK_DOWN && jump > 24)
-                    jump/=2;
+                else if (e.getKeyCode() == KeyEvent.VK_DOWN && jump > 24) {
+                    jump =20;
+                    timealoft=0;
+                }
                 if (e.getKeyCode() == KeyEvent.VK_DOWN && jump < 21 && jump > 10) {
                     crouch = true;
                 }
@@ -91,11 +95,11 @@ class Dino extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e){
             if (timealoft>0) {
-                jump+=2;
+                jump+=5/4;
                 timealoft--;
             }
             else if (jump>20){
-                jump-=1;
+                jump-=4/3;
             }
             if(crouch) {
                 height = 10;
@@ -114,12 +118,13 @@ class Dino extends JPanel {
 
             }
             score1.setText("Score:"+score);
-            if (k >99) {
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            if (k>screenSize.width/20) {
                 Random rand = new Random();
                 for(int i =0;i<19;i++){
                     cactuslist[i]=cactuslist[i+1];
                 }
-                int p = rand.nextInt(4);
+                int p = rand.nextInt(6);
                 if(score<100&&(p==2||p==3))
                     p=rand.nextInt(2);
                 cactuslist[19]=(new cactus(p,speed));
