@@ -112,17 +112,17 @@ class Dino extends JPanel {
             }
             if(k%10==0)
                 score+=1;
-            if(score%10==0&&k%10==0) {
+            if(score%100==0&&k%10==0) {
+                speed+=1;
+                timer.setDelay(timer.getDelay()+10);
                 for(int i =0;i<15;i++){
-                    speed+=1/2;
                     cactuslist[i].setSpeed(speed);
-
                 }
 
             }
             score1.setText("Score:"+score);
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            if (k>screenSize.width/15) {
+            if ((k*speed)>screenSize.width/15) {
                 Random rand = new Random();
                 for(int i =0;i<14;i++){
                     cactuslist[i]=cactuslist[i+1];
