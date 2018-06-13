@@ -112,10 +112,11 @@ class Dino extends JPanel {
             }
             if(k%10==0)
                 score+=1;
-            if(score%100==0&&k%10==0) {
+            if(score%10==0&&k%10==0) {
                 for(int i =0;i<15;i++){
-                    cactuslist[i].speed+=1/2;
                     speed+=1/2;
+                    cactuslist[i].setSpeed(speed);
+
                 }
 
             }
@@ -199,7 +200,7 @@ class Dino extends JPanel {
 class cactus {
     int type;
     int x = 0;
-    int speed=1;
+    int speed;
     public cactus(int type,int speed) {
         this.type = type;
         this.x = 0;
