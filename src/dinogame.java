@@ -114,7 +114,6 @@ class Dino extends JPanel {
                 score+=1;
             if(score%100==0&&k%10==0) {
                 speed+=1;
-                timer.setDelay(timer.getDelay()+10);
                 for(int i =0;i<15;i++){
                     cactuslist[i].setSpeed(speed);
                 }
@@ -162,7 +161,7 @@ class Dino extends JPanel {
                 haslost=false;
 
             }
-            for(int i =0;i<15;i++){
+            for(int i =0;i<15;i++) {
                 cactuslist[i].move();
             }
             k++;
