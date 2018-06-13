@@ -64,6 +64,7 @@ class Dino extends JPanel {
         Border b = new LineBorder(Color.BLACK,2);
         score1.setBorder(b);
         add(score1);
+        setBackground(Color.WHITE);
 
         addKeyListener(new KeyAdapter() {
             @Override
@@ -138,7 +139,7 @@ class Dino extends JPanel {
             }
 
             for(int i = 0;i<cactuslist.length;i++){
-                if (getWidth()-30-cactuslist[i].x<getWidth()/10+15 && getWidth()-30-cactuslist[i].x+12>getWidth()/10)
+                if (getWidth()-30-cactuslist[i].x<getWidth()/10+15 && getWidth()-30-cactuslist[i].x>getWidth()/10||getWidth()-30-cactuslist[i].x+cactuslist[i].width<getWidth()/10+15 && getWidth()-30-cactuslist[i].x+cactuslist[i].width>getWidth()/10)
                     if((cactuslist[i].type==0&&jump<25)||(cactuslist[i].type==1&&jump<35)||(cactuslist[i].type==2&&jump>25)||(cactuslist[i].type==3&&(jump<45&&jump>10))){
 
                         haslost = true;
@@ -204,10 +205,23 @@ class cactus {
     int type;
     int x = 0;
     int speed;
+    int width;
     public cactus(int type,int speed) {
         this.type = type;
         this.x = 0;
         this.speed = speed;
+        if(type==0){
+            width=25;
+        }
+        else if (type ==1){
+            width = 10;
+        }
+        else if (type==2){
+            width=20;
+        }
+        else if (type==3){
+            width=15;
+        }
 
     }
 
