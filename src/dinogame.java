@@ -56,9 +56,9 @@ class Dino extends JPanel {
     JLabel score1= new JLabel("Score:");
     Sounds sounds = new Sounds();
     Timer timer;
-    int delay= 10;
+    int delay= 15;
     public Dino(){
-        timer = new Timer(10, new TimerListener());
+        timer = new Timer(15, new TimerListener());
         timer.start();
         System.out.println(timer.getDelay());
         Border b = new LineBorder(Color.BLACK,2);
@@ -113,11 +113,15 @@ class Dino extends JPanel {
             if(k%10==0)
                 score+=1;
             if(score%100==0&&k%10==0) {
-                speed+=1;
-                for(int i =0;i<15;i++){
-                    cactuslist[i].setSpeed(speed);
-                }
+                timer.setDelay(timer.getDelay()-2);
+                if (score % 500 == 0 && k % 10 == 0) {
+                    speed += 1;
+                    for (int i = 0; i < 15; i++) {
+                        cactuslist[i].setSpeed(speed);
+                    }
+                    timer.setDelay(15);
 
+                }
             }
             score1.setText("Score:"+score);
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -148,7 +152,7 @@ class Dino extends JPanel {
                     System.out.println("Played!");
                     out = new PrintWriter(new BufferedWriter(new FileWriter("scores.out")));
                     out.print("" + score);
-                    timer.setDelay(10);
+                    timer.setDelay(15);
                     speed=1;
 
                 }
