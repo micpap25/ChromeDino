@@ -42,7 +42,7 @@ public class dinogame extends JFrame {
 }
 
 class Dino extends JPanel {
-    cactus[] cactuslist={new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1)};
+    cactus[] cactuslist={new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1),new cactus(5,1)};
     int speed = 1;
     int k = 0;
     int jump = 20;
@@ -60,6 +60,7 @@ class Dino extends JPanel {
     public Dino(){
         timer = new Timer(10, new TimerListener());
         timer.start();
+        System.out.println(timer.getDelay());
         Border b = new LineBorder(Color.BLACK,2);
         score1.setBorder(b);
         add(score1);
@@ -95,11 +96,11 @@ class Dino extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e){
             if (timealoft>0) {
-                jump+=5/4;
+                jump+=3/2;
                 timealoft--;
             }
             else if (jump>20){
-                jump-=4/3;
+                jump-=7/4;
             }
             if(crouch) {
                 height = 10;
@@ -112,22 +113,23 @@ class Dino extends JPanel {
             if(k%10==0)
                 score+=1;
             if(score%100==0&&k%10==0) {
-                delay-=2;
-                if (delay>0)
-                    timer.setDelay(delay);
+                for(int i =0;i<15;i++){
+                    cactuslist[i].speed+=1/2;
+                    speed+=1/2;
+                }
 
             }
             score1.setText("Score:"+score);
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            if (k>screenSize.width/20) {
+            if (k>screenSize.width/15) {
                 Random rand = new Random();
-                for(int i =0;i<19;i++){
+                for(int i =0;i<14;i++){
                     cactuslist[i]=cactuslist[i+1];
                 }
                 int p = rand.nextInt(6);
                 if(score<100&&(p==2||p==3))
                     p=rand.nextInt(2);
-                cactuslist[19]=(new cactus(p,speed));
+                cactuslist[14]=(new cactus(p,speed));
                 k=0;
             }
 
@@ -147,18 +149,19 @@ class Dino extends JPanel {
                     out = new PrintWriter(new BufferedWriter(new FileWriter("scores.out")));
                     out.print("" + score);
                     timer.setDelay(10);
+                    speed=1;
 
                 }
                 catch (IOException ex){
                 }
                 score=0;
-                for(int i =0;i<20;i++){
+                for(int i =0;i<15;i++){
                     cactuslist[i]=new cactus(5,speed);
                 }
                 haslost=false;
 
             }
-            for(int i =0;i<20;i++){
+            for(int i =0;i<15;i++){
                 cactuslist[i].move();
             }
             k++;
