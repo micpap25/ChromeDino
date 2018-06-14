@@ -1,5 +1,4 @@
 import javafx.stage.Screen;
-
 import javax.sound.sampled.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,6 +16,8 @@ import java.io.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
+
+
 public class dinogame extends JFrame {
     public dinogame() {
         Dino p = new Dino();
