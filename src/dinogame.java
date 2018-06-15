@@ -53,6 +53,8 @@ class Dino extends JPanel {
     int height = 20;
     boolean crouch=false;
     int sound = 0;
+    int ones = 0;
+    boolean otaHell = false;
     BufferedReader in;
     public static PrintWriter out;
     JLabel score1= new JLabel("Score:");
@@ -71,7 +73,9 @@ class Dino extends JPanel {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_UP && jump < 21&&jump>10) {
+                    if (sound != 3)
                     sounds.playJumpClip();
+
                     timealoft = 45;
                 }
                 else if (e.getKeyCode() == KeyEvent.VK_DOWN && jump > 24) {
@@ -83,15 +87,22 @@ class Dino extends JPanel {
                 }
                 if (e.getKeyCode() == KeyEvent.VK_1) {
                     if (sound != 3)
-                    sounds.endTheme(sound);
-                    if (sound == 3) {
-                        sound = 0;
+                        sounds.endTheme(sound);
+                    if (otaHell) {
+                        sounds.playTheme(4);
                     }
-                    else {
-                        sound++;
+                    else{
+                        if (sound == 3) {
+                            sound = 0;
+                        }
+                        else {
+                            sound++;
+                        }
+                        if (sound != 3)
+                            sounds.playTheme(sound);
+                        ones++;
                     }
-                    if (sound != 3)
-                    sounds.playTheme(sound);
+
                 }
             }
             @Override
@@ -134,6 +145,12 @@ class Dino extends JPanel {
                 }
 
             }
+            if (k%60 == 0) {
+                ones = 0;
+            }
+            if (ones >= 8) {
+                otaHell = true;
+            }
             score1.setText("Score:"+score);
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             if ((k*speed)>screenSize.width/15) {
@@ -159,6 +176,7 @@ class Dino extends JPanel {
             if(haslost){
                 try {
                     System.out.println("Died!");
+                    if(sound != 3)
                     sounds.playDeathClip();
                     System.out.println("Played!");
                     out = new PrintWriter(new BufferedWriter(new FileWriter("scores.out")));
@@ -206,8 +224,12 @@ class Dino extends JPanel {
                 BufferedImage rex = ImageIO.read(new File("images\\ChromeDino_Run1.png"));
                 g.drawImage(rex, getWidth() / 10, getHeight() / 2 - jump, 15, height, null);
             }
+            if (otaHell) {
+                BufferedImage ota = ImageIO.read(new File("images\\Ota.jpg"));
+                g.drawImage(ota, getWidth()/2, getHeight()/5, 50, 70, null);
+            }
 
-        }catch (IOException ex){};
+        }catch (IOException ex){}
     }
 
 }
@@ -253,8 +275,8 @@ class cactus {
 }
 
 class Sounds {
-    private String[] files = {"src\\Death_sound_Effect.wav","src\\jump.wav","src\\Wii_Theme.wav", "src\\Black_Tar.wav", "src\\ROUTE_209_JAZZ.wav"};
-    private Clip[] clips = new Clip[5];
+    private String[] files = {"src\\Death_sound_Effect.wav","src\\jump.wav","src\\Wii_Theme.wav", "src\\Black_Tar.wav", "src\\ROUTE_209_JAZZ.wav", "src\\Ota.wav"};
+    private Clip[] clips = new Clip[6];
 
     public Sounds() {
         try {
@@ -285,10 +307,17 @@ class Sounds {
     }
 
     void playTheme(int music) {
-        music = music + 2;
-        clips[music].loop(20000);
-        clips[music].setFramePosition(0);
-        clips[music].start();
+        if (music == 4) {
+            clips[clips.length-1].loop(20000);
+            clips[clips.length-1].setFramePosition(0);
+            clips[clips.length-1].start();
+        }
+        else {
+            music = music + 2;
+            clips[music].loop(20000);
+            clips[music].setFramePosition(0);
+            clips[music].start();
+        }
     }
     void endTheme (int music){
         music+=2;
