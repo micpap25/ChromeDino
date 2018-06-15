@@ -1,4 +1,4 @@
-import javafx.stage.Screen;
+
 import javax.sound.sampled.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -52,7 +52,7 @@ class Dino extends JPanel {
     boolean haslost = false;
     int height = 20;
     boolean crouch=false;
-    boolean sound = true;
+    int sound = 0;
     BufferedReader in;
     public static PrintWriter out;
     JLabel score1= new JLabel("Score:");
@@ -81,7 +81,18 @@ class Dino extends JPanel {
                 if (e.getKeyCode() == KeyEvent.VK_DOWN && jump < 21 && jump > 10) {
                     crouch = true;
                 }
-
+                if (e.getKeyCode() == KeyEvent.VK_1) {
+                    if (sound != 3)
+                    sounds.endTheme(sound);
+                    if (sound == 3) {
+                        sound = 0;
+                    }
+                    else {
+                        sound++;
+                    }
+                    if (sound != 3)
+                    sounds.playTheme(sound);
+                }
             }
             @Override
             public void keyReleased(KeyEvent e) {
@@ -90,7 +101,8 @@ class Dino extends JPanel {
                 }
             }
         });
-        sounds.playTheme();
+        if (sound != 3)
+        sounds.playTheme(sound);
 
     }
 
@@ -241,8 +253,8 @@ class cactus {
 }
 
 class Sounds {
-    private String[] files = {"src\\Death_sound_Effect.wav","src\\jump.wav","src\\Wii_Theme.wav"};
-    private Clip[] clips = new Clip[3];
+    private String[] files = {"src\\Death_sound_Effect.wav","src\\jump.wav","src\\Wii_Theme.wav", "src\\Black_Tar.wav", "src\\ROUTE_209_JAZZ.wav"};
+    private Clip[] clips = new Clip[5];
 
     public Sounds() {
         try {
@@ -272,10 +284,15 @@ class Sounds {
         clips[1].start();
     }
 
-    void playTheme() {
-        clips[2].loop(20000);
-        clips[2].setFramePosition(0);
-        clips[2].start();
+    void playTheme(int music) {
+        music = music + 2;
+        clips[music].loop(20000);
+        clips[music].setFramePosition(0);
+        clips[music].start();
+    }
+    void endTheme (int music){
+        music+=2;
+        clips[music].stop();
     }
 
 }
